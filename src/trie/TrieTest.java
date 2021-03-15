@@ -39,8 +39,8 @@ class TrieTest {
 	}
 	
 	@Test
-	void testFourWords() {
-		String [] allWords = new String[]{"data", "door", "dorm", "doom"};
+	void testFileWords1() {
+		String [] allWords = new String[]{"bear","bell","bid","bull","buy","sell","stock","stop"};
 		TrieNode root = Trie.buildTrie(allWords);
 		// print it for verification
 		Trie.print(root, allWords);

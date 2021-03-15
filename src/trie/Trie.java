@@ -34,50 +34,11 @@ public class Trie {
 		TrieNode node = createFirstTrieNode(allWords[0], root);
 		for (short i = 1; i < allWords.length; i++) {	
 	    	word = allWords[i];
-	    	//node = root;
-	    	String prefix = "";
-	    	//insert(root, allWords, i);
 	    	insert(node, allWords, i);
 		}
 		return root;
 	}
 	
-//	static TrieNode insert(TrieNode node, String[] allWords, int currIndex) {
-//		String word = allWords[currIndex];
-//		TrieNode newNode = null;
-//		if(node == null ) {
-//			Indexes newNodeIdx = new Indexes(currIndex, (short) 0, (short) (word.length() - 1) );
-//			return new TrieNode(newNodeIdx, null, null);
-//		}
-//		String nodeWordPrefix = "";
-//		String nodeWord = "";
-//		short endIndex, startIndex;
-//		if(node.substr != null) {
-//			endIndex = node.substr.endIndex;
-//			startIndex = node.substr.startIndex;
-//			nodeWord = allWords[node.substr.wordIndex];
-//			nodeWordPrefix = nodeWord.substring(startIndex, endIndex);
-//		} else {
-//			endIndex = (short) (word.length() -1) ;
-//			startIndex = zero;
-//		}
-//		String wordPrefix = word.substring(0, endIndex);
-//		int cmp = nodeWordPrefix.compareTo(wordPrefix); 
-//		if(cmp < 0) {
-//			node.firstChild = insert(node.firstChild, allWords, currIndex);
-//		}
-//		else if(cmp >  0) {
-//			node.sibling = insert(node.sibling, allWords, currIndex);
-//		}
-//		if(cmp == 0) {
-//			node.substr = new Indexes(currIndex, startIndex, endIndex);
-//			//node.firstChild
-//		} 
-////		if (node.firstChild == null) {
-////			node.firstChild = insert(node.firstChild, idx, allWords, currIndex);
-////		}
-//		return node;
-//	}
 	
 	static void insert(TrieNode node, String[] allWords, int currIndex) {
 		String word = allWords[currIndex];
@@ -86,7 +47,8 @@ public class Trie {
 			short startIndex = node.substr.startIndex;
 			String nodeWord = allWords[node.substr.wordIndex];
 			String nodeWordPrefix = nodeWord.substring(startIndex, endIndex +1 );
-			String wordPrefix = word.substring(startIndex, endIndex + 1);
+			int wordEndIndex = word.length() < (endIndex + 1) ? word.length() : (endIndex + 1) ;
+			String wordPrefix = word.substring(startIndex, wordEndIndex);
 			if(wordPrefix.equalsIgnoreCase(nodeWordPrefix)) {
 				//found the same prefix, go down the tree
 				node = node.firstChild;
@@ -117,8 +79,14 @@ public class Trie {
 				node.substr = idx;
 				break;
 			} else {
-				//if(node)
-				//break;
+				if(node.sibling == null) {
+					Indexes idx = new Indexes(currIndex, startIndex, (short) (word.length() -1 ));
+					node.sibling = new TrieNode(idx, null, null);
+				} else if(node.firstChild == null) {
+					Indexes idx = new Indexes(currIndex, startIndex, (short) (word.length() -1 ));
+					node.firstChild = new TrieNode(idx, null, null);
+				}
+				break;
 			}
 
 		}
