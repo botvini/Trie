@@ -86,30 +86,38 @@ public class Trie {
 			short startIndex = node.substr.startIndex;
 			String nodeWord = allWords[node.substr.wordIndex];
 			String nodeWordPrefix = nodeWord.substring(startIndex, endIndex +1 );
-			String wordPrefix = word.substring(0, endIndex + 1);
+			String wordPrefix = word.substring(startIndex, endIndex + 1);
 			if(wordPrefix.equalsIgnoreCase(nodeWordPrefix)) {
-				//found the same prefix, go down in tree
+				//found the same prefix, go down the tree
 				node = node.firstChild;
 				continue;
-			} 
+			}
 			
 			//	find matching prefix
 			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < allWords.length; i++) {
-				if(word.charAt(i) == nodeWord.charAt(i)) {
-					sb.append(word.charAt(i));
+			String wordSuffix = word.substring(startIndex, word.length()-1);
+			String nodeWordSuffix = nodeWord.substring(startIndex, nodeWord.length()-1);
+			for (int i = 0; i < wordSuffix.length(); i++) {
+				if(wordSuffix.charAt(i) == nodeWordSuffix.charAt(i)) {
+					sb.append(wordSuffix.charAt(i));
+				} else {
+					break;
 				}
 			}
 			if(sb.length() > 0) {
-				Indexes leftIdx =  new Indexes(node.substr.wordIndex, (short) sb.length(), (short) (nodeWord.length() -1 ));
-				TrieNode leftNode = new TrieNode(leftIdx, null, null);
-				node.firstChild = leftNode;
-				Indexes idx = new Indexes(node.substr.wordIndex, node.substr.startIndex, (short) (sb.length() -1 ) );
-				node.substr = idx;
 				Indexes rightIdx =  new Indexes(currIndex, (short) sb.length(), (short) (word.length() -1 ));
 				TrieNode rightNode = new TrieNode(rightIdx, null, null);
-				node.sibling = rightNode;
+				//node.sibling = rightNode;
+				Indexes leftIdx =  new Indexes(node.substr.wordIndex, (short) sb.length(), (short) (nodeWord.length() -1 ));
+				TrieNode leftNode = new TrieNode(leftIdx, null, rightNode);
+				node.firstChild = leftNode;
+				short newEndIndex = (short) (node.substr.startIndex +  sb.length() - 1);
+				Indexes idx = new Indexes(node.substr.wordIndex, node.substr.startIndex, newEndIndex );
+				node.substr = idx;
 				break;
+			} else {
+				//if(node)
+				//break;
 			}
 
 		}
