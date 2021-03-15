@@ -105,10 +105,11 @@ public class Trie {
 				}
 			}
 			if(sb.length() > 0) {
-				Indexes rightIdx =  new Indexes(currIndex, (short) sb.length(), (short) (word.length() -1 ));
+				short newStartIndex = (short) (sb.length() + startIndex);
+				Indexes rightIdx =  new Indexes(currIndex, newStartIndex, (short) (word.length() -1 ));
 				TrieNode rightNode = new TrieNode(rightIdx, null, null);
 				//node.sibling = rightNode;
-				Indexes leftIdx =  new Indexes(node.substr.wordIndex, (short) sb.length(), (short) (nodeWord.length() -1 ));
+				Indexes leftIdx =  new Indexes(node.substr.wordIndex, newStartIndex, (short) (nodeWord.length() -1 ));
 				TrieNode leftNode = new TrieNode(leftIdx, null, rightNode);
 				node.firstChild = leftNode;
 				short newEndIndex = (short) (node.substr.startIndex +  sb.length() - 1);

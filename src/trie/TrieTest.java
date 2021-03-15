@@ -37,4 +37,14 @@ class TrieTest {
 		// do completion lists
 		//Trie.completionLists(root, allWords); 
 	}
+	
+	@Test
+	void testFourWords() {
+		String [] allWords = new String[]{"data", "door", "dorm", "doom"};
+		TrieNode root = Trie.buildTrie(allWords);
+		// print it for verification
+		Trie.print(root, allWords);
+		// do completion lists
+		//Trie.completionLists(root, allWords); 
+	}
 }
